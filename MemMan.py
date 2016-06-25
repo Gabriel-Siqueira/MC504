@@ -220,32 +220,6 @@ class LinkedList:
                     if block.size < best_block.size:
                         best_block = block
 
-        block_used = MemBlock(process_id, alloc_size)
-        self.mem_list.insert(self.mem_list.index(best_block), block_used)
-
-        if block.size - alloc_size > 0:
-            block_free = MemBlock(0, block.size - alloc_size)
-            self.mem_list.insert(self.mem_list.index(block_used)+1, block_free)
-
-        self.mem_list.remove(best_block)
-
-        if best_block != -1:
-            return self.mem_list.index(block_used)
-        else:
-            return -1
-    def best_fit(self, process_id, alloc_size):
-
-        best_block = -1
-
-        for block in self.mem_list:
-
-            if block.id == 0 and block.size >= alloc_size:
-                if best_block == -1 :
-                    best_block = block
-                else:
-                    if block.size < best_block.size:
-                        best_block = block
-
         if best_block != -1:
 
             block_used = MemBlock(process_id, alloc_size)
