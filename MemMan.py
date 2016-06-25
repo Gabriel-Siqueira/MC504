@@ -3,7 +3,14 @@ class BitMap:
         self.size = size
         self.bitMap = [0]*size
         self.add = 0
-        
+
+    def __str__(self):
+		s = ""
+		for bit in self.bitMap
+			s+=str(bit)
+
+		return s + "\n"
+	
     def first_fit(self, alloc_size):
         add = 0
         while add < self.size:
@@ -126,3 +133,4 @@ class BitMap:
         while i < alloc_size:
             self.bitMap[add + i] = 0
             i += 1
+    
