@@ -1,3 +1,5 @@
+import math
+            
 class BitMap:
     def __init__(self, size):
         self.size = size
@@ -292,3 +294,226 @@ class LinkedList:
                 return 1
 
         return -1
+
+class QuickFit:
+    def __init__(self, total_mem):
+        self.qll = {total_mem: [(0, total_mem)]}
+
+    def __str__(self):
+        s = ""
+        if self.qll:
+            for q in self.qll:
+                s += "%d msu: %s\n" % (q, self.qll[q])
+        else:
+            s += "(Empty)"
+
+        return s
+
+    def __repr__(self):
+        return str(self)
+
+    def quick_fit(self, alloc_size):
+        if alloc_size in self.qll:
+
+            l = self.qll[alloc_size]
+            aux = l.pop()
+            if not l:
+                del self.qll[alloc_size]
+
+            return aux[0]
+        elif 2 * alloc_size in self.qll:
+            l = self.qll[2 * alloc_size]
+            aux = l.pop()
+            if not l:
+                del self.qll[2 * alloc_size]
+            try:
+                self.qll[alloc_size] += [(aux[1] - alloc_size, aux[1])]
+            except KeyError:
+                self.qll[alloc_size] = [(aux[1] - alloc_size, aux[1])]
+
+            return aux[0]
+        else:
+            try:
+                prox = alloc_size
+                for q in self.qll:
+                    if q > alloc_size:
+                        prox = q
+                        break
+
+                try:
+                    l = self.qll[prox]
+                    aux = l.pop()
+                    if not l:
+                        del self.qll[prox]
+                    try:
+                        self.qll[prox - alloc_size] += [(aux[1] - (prox - alloc_size), aux[1])]
+                    except KeyError:
+                        self.qll[prox - alloc_size] = [(aux[1] - (prox - alloc_size), aux[1])]
+                    return aux[0]
+                except IndexError:
+                    del self.qll[prox]
+                except KeyError:
+                    return -1
+
+            except StopIteration:
+                return -1
+
+    def free(self, add_begin, size):
+        add_end = add_begin + size
+        viz_ant, viz_prox = None, None
+        to_delete = [None] * 2
+        cont = 0
+        for q in self.qll:
+            for block in self.qll[q]:
+                if add_end == block[0]:
+                    viz_prox = block
+                    l = self.qll[q]
+                    l.remove(block)
+                    if not l:
+                        to_delete[0] = q
+                    cont += 1
+
+                if block[1] == add_begin:
+                    viz_ant = block
+                    l = self.qll[q]
+                    l.remove(block)
+                    if not l:
+                        to_delete[1] = q
+                    cont += 1
+                if cont == 2:
+                    break
+
+        for i in range(0, 2):
+            if to_delete[i]:
+                del self.qll[to_delete[i]]
+
+        if viz_ant:
+            add_begin = viz_ant[0]
+
+        if viz_prox:
+            add_end = viz_prox[1]
+
+        # if size > 0
+        if add_begin < add_end:
+            try:
+                self.qll[add_end - add_begin] += [(add_begin, add_end)]
+            except KeyError:
+                self.qll[add_end - add_begin] = [(add_begin, add_end)]
+
+def teste(params, size):
+    q = QuickFit(size)
+    k = 1
+    for i in range(0, len(params)):
+        if i % 2 == 1:
+            param = params[i]
+            if idc == 'a':
+                print("q.quick_fit(%d) returns %s" % (param, str(q.quick_fit(param))))
+            elif idc == 'f':
+                q.free(param[0], param[1])
+                print("q.free(%d, %d)" % (param[0], param[1]))
+
+            print("Resultado %d:\n" % (k), q)
+            k += 1
+        else:
+            idc = params[i]
+
+class BuddyBlock:
+    def __init__(self, power_size):
+        self.whole = True
+        self.id    = -1
+        self.empty = True
+        self.power_size  = power_size
+        self.size  = 2**power_size
+        self.left  = None
+        self.right = None
+
+    def __str__(self):
+        s = "  ["
+        if self.left != None:
+            s += str(self.left)
+        if self.whole:
+            s += "  " + repr(self.id) + " (" + repr(self.size) + ")"
+        if self.right != None:
+            s += str(self.right)
+        s += "  ]"
+        return s
+
+    def __repr__(self):
+        return str(self)
+        
+    def split(self):
+        if (self.size == 2) or not self.empty:
+            return -1
+        else:
+            self.id    = -1
+            self.whole = False
+            self.empty = False
+            self.left  = BuddyBlock(self.power_size - 1)
+            self.right = BuddyBlock(self.power_size - 1)
+            return 1
+
+    def marge(self):
+        if self.whole:
+            return 1
+        if self.left.empty and self.right.empty:
+            self.left = None
+            self.right = None
+            self.empty = True
+            self.whole = True
+            return 1
+        else:
+            return -1
+        
+    def fill(self, id):
+        if(self.empty):
+            self.id = id
+            self.empty = False
+            return 1
+        else:
+            return -1
+
+    def fit(self, id, size):
+        if size > self.size:
+            return -1
+        elif not self.whole:
+            if(self.left.fit(id, size) == -1):
+                return self.right.fit(id, size)
+            else:
+                return 1
+        elif not self.empty:
+            return -1
+        elif size > self.size / 2:
+            return self.fill(id)
+        else:
+            if self.split() == -1:
+                return -1
+            else:
+                self.left.fit(id, size)
+    def remove(self, id):
+        if self.whole:
+            if (not self.empty) and (self.id == id):
+                self.empty = True
+                self.id = -1
+                return 1
+            else:
+                return -1
+        else:
+            self.left.remove(id)
+            self.right.remove(id)
+            self.marge()
+
+class BuddySystem:
+    def __init__(self, power_size):
+        self.Memory = BuddyBlock(power_size)
+
+    def __str__(self):
+        return str(self.Memory)
+    
+    def __repr__(self):
+        return repr(self.Memory)
+
+    def buddy_system(self, id, size):
+        return self.Memory.fit(id,size)
+
+    def free(self, id):
+        return self.Memory.remove(id)
