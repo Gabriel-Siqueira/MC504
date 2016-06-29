@@ -30,7 +30,7 @@ class BitMap:
                         self.bitMap[add + i] = 1
                         i += 1
 
-                        return add
+                    return add
 
                 else:
                     add += i
@@ -50,7 +50,7 @@ class BitMap:
 
         while not second or add != add_begin:
             second = True
-            if selfo.bitMap[add] == 0:
+            if self.bitMap[add] == 0:
                 i = 0
                 while i < alloc_size and add + i < self.size and self.bitMap[add + i] == 0:
                     i += 1
@@ -146,9 +146,8 @@ class MemBlock:
 
 class LinkedList:
     
-    mem_list = []
-
     def __init__(self, total_mem):
+        self.mem_list = []
         self.mem_list.append(MemBlock(0, total_mem))
         self.it = iter(self.mem_list)
     
@@ -503,8 +502,8 @@ class BuddyBlock:
             self.marge()
 
 class BuddySystem:
-    def __init__(self, power_size):
-        self.Memory = BuddyBlock(power_size)
+    def __init__(self, size):
+        self.Memory = BuddyBlock(math.floor(math.log(size,2)))
 
     def __str__(self):
         return str(self.Memory)
