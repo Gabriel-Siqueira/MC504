@@ -22,7 +22,9 @@ def test(size, it, ch):
      ln = LinkedList(size)
      lb = LinkedList(size)
      lw = LinkedList(size)
-     qf = QuickFit(size)
+     qn = QuickFit(size)
+     qb = QuickFit(size)
+     qw = QuickFit(size)
      bs = BuddySystem(size)
 
      if ch == 'bf':
@@ -42,7 +44,9 @@ def test(size, it, ch):
      elif ch == 'lw':
           print(lw)
      elif ch == 'qf':
-          print(qf)
+          print(qn)
+          print(qb)
+          print(qw)
      elif ch == 'bs':
           print(bs)
 
@@ -50,10 +54,13 @@ def test(size, it, ch):
      on_memory = [] # indicates processes on memory
      for i in range(it):
           # random choice is free memory
-          if(ran.random() > 0.5 and on_memory != []):
-               out = on_memory[ran.randint(len(on_memory))]
+          if(ran.random() > 0.5 and on_memory):
+               out = on_memory[ran.randint(0,len(on_memory) - 1)]
 
-               if ch == 'bf':
+               if ch == 'time':
+                    times = "'free'" + 21 * ",'{:d}'"
+                    print(times.format(new.begbf,new.begbn,new.begbb,new.begbw,new.begqn,new.begqb,new.begqw,new.size,new.id,bf.time,bn.time,bb.time,bw.time,lf.time,ln.time,lb.time,lw.time,qn.time,qb.time,qw.time,bs.time))
+               elif ch == 'bf':
                     print("free: id",out.id,"beg:",out.begbf,"size:", out.size)
                elif ch == 'bn':
                     print("free: id",out.id,"beg:",out.begbn,"size:", out.size)
@@ -62,20 +69,24 @@ def test(size, it, ch):
                elif ch == 'bw':
                     print("free: id",out.id,"beg:",out.begbw,"size:", out.size)
                elif ch == 'qf':
-                    print("free: id",out.id,"beg:",out.begqf,"size:", out.size)
+                    print("free: id",out.id,"beg:",out.begqn,"size:", out.size)
+                    print("free: id",out.id,"beg:",out.begqb,"size:", out.size)
+                    print("free: id",out.id,"beg:",out.begqw,"size:", out.size)
                else:
                     print("free: id",out.id,"size:", out.size)
 
-               bf.free(out.begbbf,out.size)
-               bn.free(out.begbbn,out.size)
-               bb.free(out.begbbb,out.size)
-               bw.free(out.begbbw,out.size)
+               bf.free(out.begbf,out.size)
+               bn.free(out.begbn,out.size)
+               bb.free(out.begbb,out.size)
+               bw.free(out.begbw,out.size)
                lf.free(out.id)
                ln.free(out.id)
                lb.free(out.id)
                lw.free(out.id)
-               qf.free(out.begqf, out.size)
-               bs.free(self.id)
+               qn.free(out.begqn, out.size)
+               qb.free(out.begqb, out.size)
+               qw.free(out.begqw, out.size)
+               bs.free(out.id)
                on_memory.remove(out)
 
           # random choice is allocate memory
@@ -90,21 +101,29 @@ def test(size, it, ch):
                ln.next_fit(new.id, new.size)
                lb.best_fit(new.id, new.size)
                lw.worst_fit(new.id, new.size)
-               new.begqf = qf.quick_fit(new.size)
+               new.begqn = qn.next_fit(new.size)
+               new.begqb = qb.best_fit(new.size)
+               new.begqw = qw.worst_fit(new.size)
                bs.buddy_system(new.id, new.size)
+               on_memory.append(new)
 
-               if ch == 'bf':
-                    print("create: id",new.id,"beg:",new.begbf,"size:", new.size)
+               if ch == 'time':
+                    times = "'alloc'" + 21 * ",'{:d}'"
+                    print(times.format(new.begbf,new.begbn,new.begbb,new.begbw,new.begqn,new.begqb,new.begqw,new.size,new.id,bf.time,bn.time,bb.time,bw.time,lf.time,ln.time,lb.time,lw.time,qn.time,qb.time,qw.time,bs.time))
+               elif ch == 'bf':
+                    print("alloc: id",new.id,"beg:",new.begbf,"size:", new.size)
                elif ch == 'bn':
-                    print("create: id",new.id,"beg:",new.begbn,"size:", new.size)
+                    print("alloc: id",new.id,"beg:",new.begbn,"size:", new.size)
                elif ch == 'bb':
-                    print("create: id",new.id,"beg:",new.begbb,"size:", new.size)
+                    print("alloc: id",new.id,"beg:",new.begbb,"size:", new.size)
                elif ch == 'bw':
-                    print("create: id",new.id,"beg:",new.begbw,"size:", new.size)
+                    print("alloc: id",new.id,"beg:",new.begbw,"size:", new.size)
                elif ch == 'qf':
-                    print("create: id",new.id,"beg:",new.begqf,"size:", new.size)
+                    print("alloc: id",new.id,"beg:",new.begqn,"size:", new.size)
+                    print("alloc: id",new.id,"beg:",new.begqb,"size:", new.size)
+                    print("alloc: id",new.id,"beg:",new.begqw,"size:", new.size)
                else:
-                    print("create: id",new.id,"size:", new.size)
+                    print("alloc: id",new.id,"size:", new.size)
 
           if ch == 'bf':
                print(bf)
@@ -123,6 +142,8 @@ def test(size, it, ch):
           elif ch == 'lw':
                print(lw)
           elif ch == 'qf':
-               print(qf)
+               print(qn)
+               print(qb)
+               print(qw)
           elif ch == 'bs':
                print(bs)
