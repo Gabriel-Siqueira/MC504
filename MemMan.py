@@ -450,6 +450,7 @@ class QuickFit:
         self.alloc_block(block_size, (add_begin, add_end))
 
 class BuddyBlock:
+
     def __init__(self, power_size):
         self.whole = True
         self.id    = -1
@@ -510,8 +511,11 @@ class BuddyBlock:
             return -1
         elif not self.whole:
             if(self.left.fit(id, size, time + 1) == -1):
-                return self.right.fit(id, size, time + 1)
+                r = self.right.fit(id, size, time + 1)
+                self.time = right.time
+                return r
             else:
+                self.time = left.time
                 return 1
         elif not self.empty:
             return -1
@@ -534,7 +538,9 @@ class BuddyBlock:
                 return -1
         else:
             self.left.remove(id, time + 1)
+            time = left.time
             self.right.remove(id, time + 1)
+            self.time = right.time
             self.merge()
 
 class BuddySystem:
