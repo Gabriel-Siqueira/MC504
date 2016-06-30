@@ -92,8 +92,8 @@ class LinkedList:
             block_used = MemBlock(process_id, alloc_size)
             self.mem_list.insert(self.mem_list.index(best_block), block_used)
 
-            if block.size - alloc_size > 0:
-                block_free = MemBlock(0, block.size - alloc_size)
+            if best_block.size - alloc_size > 0:
+                block_free = MemBlock(0, best_block.size - alloc_size)
                 self.mem_list.insert(self.mem_list.index(block_used)+1, block_free)
 
             self.mem_list.remove(best_block)
@@ -121,8 +121,8 @@ class LinkedList:
             block_used = MemBlock(process_id, alloc_size)
             self.mem_list.insert(self.mem_list.index(worst_block), block_used)
 
-            if block.size - alloc_size > 0:
-                block_free = MemBlock(0, block.size - alloc_size)
+            if worst_block.size - alloc_size > 0:
+                block_free = MemBlock(0, worst_block.size - alloc_size)
                 self.mem_list.insert(self.mem_list.index(block_used)+1, block_free)
 
             self.mem_list.remove(worst_block)
