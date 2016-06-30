@@ -1,4 +1,7 @@
-from MemMan import *
+from BitMap import *
+from LinkedList import *
+from QuickFit import *
+from BuddySystem import *
 import random as ran
 
 class Process:
