@@ -148,3 +148,6 @@ class BitMap:
             self.time += 1
             self.bitMap[add + i] = 0
             i += 1
+
+    def segmentation(self):
+        return 0

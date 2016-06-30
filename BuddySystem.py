@@ -1,3 +1,5 @@
+import math
+
 class BuddyBlock:
 
     def __init__(self, power_size):
@@ -61,10 +63,10 @@ class BuddyBlock:
         elif not self.whole:
             if(self.left.fit(id, size, time + 1) == -1):
                 r = self.right.fit(id, size, time + 1)
-                self.time = right.time
+                self.time = self.right.time
                 return r
             else:
-                self.time = left.time
+                self.time = self.left.time
                 return 1
         elif not self.empty:
             return -1
@@ -87,11 +89,16 @@ class BuddyBlock:
                 return -1
         else:
             self.left.remove(id, time + 1)
-            time = left.time
+            time = self.left.time
             self.right.remove(id, time + 1)
-            self.time = right.time
+            self.time = self.right.time
             self.merge()
 
+    def segmentation(self):
+        if self.whole = True:
+        
+        return ()
+            
 class BuddySystem:
     def __init__(self, size):
         self.memory = BuddyBlock(math.floor(math.log(size,2)))
@@ -111,3 +118,6 @@ class BuddySystem:
         r = self.memory.remove(id,1)
         self.time = self.memory.time
         return r
+
+    def segmentation(self):
+        return self.memory.segmentation()

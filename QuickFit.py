@@ -5,6 +5,11 @@ class QuickFit:
         self.last = None
         self.time = 0
 
+    def segmentation(self):
+        blocks = sum([(b[1] - b[0]) for b in l for l in list(self.qll.values())])
+        spaces = sum([len(l) for l in list(self.qll.values())])*self.size
+        return (blocks,spaces)
+        
     def __str__(self):
         s = ""
         if self.qll:
@@ -51,19 +56,6 @@ class QuickFit:
         to_remove = alloc_size
         for q in self.qll:
             if q >= alloc_size:
-                to_remove = q
-                break
-
-        return self.fit(to_remove, alloc_size)
-
-    def next_fit(self, alloc_size):
-        if not self.last:
-            self.last = alloc_size
-
-        to_remove = self.last
-
-        for q in self.qll:
-            if q >= self.last:
                 to_remove = q
                 break
 

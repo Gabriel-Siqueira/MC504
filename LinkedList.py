@@ -160,5 +160,11 @@ class LinkedList:
                     self.mem_list.remove(block)
 
                 return 1
-
         return -1
+
+    def segmentation(self):
+        for i in self.mem_list:
+            if(i.id == 0):
+                blocks += i.size
+                space += 1
+        return (blocks,space)
