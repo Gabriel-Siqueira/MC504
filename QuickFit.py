@@ -1,8 +1,12 @@
 class QuickFit:
+    """
+        size: Total size of the memory
+        qll: Is the Hash-Table of Lists whose keys are the memory sizes and values are lists of blocks. 
+        time: Is the variable responsible for keep the virtual time that the operations take to get done
+    """
     def __init__(self, total_mem):
         self.size = total_mem
         self.qll = {total_mem: [(0, total_mem)]}
-        self.last = None
         self.time = 0
 
     def segmentation(self):
