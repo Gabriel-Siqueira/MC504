@@ -163,8 +163,10 @@ class LinkedList:
         return -1
 
     def segmentation(self):
+        blocks = 0
+        spaces = 0
         for i in self.mem_list:
             if(i.id == 0):
                 blocks += i.size
-                space += 1
-        return (blocks,space)
+                spaces += 1
+        return (blocks,spaces)

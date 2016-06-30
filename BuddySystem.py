@@ -95,9 +95,15 @@ class BuddyBlock:
             self.merge()
 
     def segmentation(self):
-        if self.whole = True:
-        
-        return ()
+        if self.whole:
+            if self.empty:
+                return(1,self.size)
+            else:
+                return(0,0)
+        else:
+            (blocksl,spacesl) = self.left.segmentation()
+            (blocksr,spacesr) = self.right.segmentation()
+            return (blocksl + blocksr, spacesl + spacesr)
             
 class BuddySystem:
     def __init__(self, size):
