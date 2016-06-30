@@ -406,6 +406,8 @@ class QuickFit:
         return self.fit(max_size, alloc_size)
 
     def free(self, add_begin, size):
+        if add_begin < 0:
+            return -1
         add_end = add_begin + size
         viz_ant, viz_prox = None, None
         to_delete = [None] * 2
@@ -512,10 +514,10 @@ class BuddyBlock:
         elif not self.whole:
             if(self.left.fit(id, size, time + 1) == -1):
                 r = self.right.fit(id, size, time + 1)
-                self.time = right.time
+                self.time = self.right.time
                 return r
             else:
-                self.time = left.time
+                self.time = self.left.time
                 return 1
         elif not self.empty:
             return -1
@@ -538,9 +540,9 @@ class BuddyBlock:
                 return -1
         else:
             self.left.remove(id, time + 1)
-            time = left.time
+            time = self.left.time
             self.right.remove(id, time + 1)
-            self.time = right.time
+            self.time = self.right.time
             self.merge()
 
 class BuddySystem:

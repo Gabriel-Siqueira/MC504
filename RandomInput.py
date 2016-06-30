@@ -50,7 +50,7 @@ def test(size, it, ch):
      elif ch == 'bs':
           print(bs)
 
-     
+     print('operacao,','begbf,','begbn,',"begbb,","begbw,","begqn,","begqb,","begqw,","size,","id,","bftime,","bntime,","bbtime,","bwtime,","lftime,","lntime,","lbtime,","lwtime,","qntime,","qbtime,","qwtime,","bstime")
      on_memory = [] # indicates processes on memory
      for i in range(it):
           # random choice is free memory
@@ -58,7 +58,7 @@ def test(size, it, ch):
                out = on_memory[ran.randint(0,len(on_memory) - 1)]
 
                if ch == 'time':
-                    times = "'free'" + 21 * ",'{:d}'"
+                    times = "free" + 21 * ",{:d}"
                     print(times.format(new.begbf,new.begbn,new.begbb,new.begbw,new.begqn,new.begqb,new.begqw,new.size,new.id,bf.time,bn.time,bb.time,bw.time,lf.time,ln.time,lb.time,lw.time,qn.time,qb.time,qw.time,bs.time))
                elif ch == 'bf':
                     print("free: id",out.id,"beg:",out.begbf,"size:", out.size)
@@ -75,17 +75,24 @@ def test(size, it, ch):
                else:
                     print("free: id",out.id,"size:", out.size)
 
-               bf.free(out.begbf,out.size)
-               bn.free(out.begbn,out.size)
-               bb.free(out.begbb,out.size)
-               bw.free(out.begbw,out.size)
+               if out.begbf >= 0:
+                    bf.free(out.begbf,out.size)
+               if out.begbn >= 0:
+                    bn.free(out.begbn,out.size)
+               if out.begbb >= 0:
+                    bb.free(out.begbb,out.size)
+               if out.begbf >= 0:
+                    bw.free(out.begbw,out.size)
                lf.free(out.id)
                ln.free(out.id)
                lb.free(out.id)
                lw.free(out.id)
-               qn.free(out.begqn, out.size)
-               qb.free(out.begqb, out.size)
-               qw.free(out.begqw, out.size)
+               if out.begqn != -1:
+                    qn.free(out.begqn, out.size)
+               if out.begqb != -1:
+                    qb.free(out.begqb, out.size)
+               if out.begqw != -1:
+                    qw.free(out.begqw, out.size)
                bs.free(out.id)
                on_memory.remove(out)
 
@@ -108,7 +115,7 @@ def test(size, it, ch):
                on_memory.append(new)
 
                if ch == 'time':
-                    times = "'alloc'" + 21 * ",'{:d}'"
+                    times = "alloc" + 21 * ",{:d}"
                     print(times.format(new.begbf,new.begbn,new.begbb,new.begbw,new.begqn,new.begqb,new.begqw,new.size,new.id,bf.time,bn.time,bb.time,bw.time,lf.time,ln.time,lb.time,lw.time,qn.time,qb.time,qw.time,bs.time))
                elif ch == 'bf':
                     print("alloc: id",new.id,"beg:",new.begbf,"size:", new.size)
