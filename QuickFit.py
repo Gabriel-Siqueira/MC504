@@ -6,8 +6,10 @@ class QuickFit:
         self.time = 0
 
     def segmentation(self):
-        blocks = sum([(b[1] - b[0]) for b in l for l in list(self.qll.values())])
-        spaces = sum([len(l) for l in list(self.qll.values())])*self.size
+        blocks = 0
+        for l in list(self.qll.values()):
+            blocks += sum([(b[1] - b[0]) for b in l ])
+        spaces = sum([len(l) for l in list(self.qll.values())])
         return (blocks, spaces)
         
     def __str__(self):
@@ -53,6 +55,7 @@ class QuickFit:
         return aux[0]
 
     def first_fit(self, alloc_size):
+        self.time = 0
         to_remove = alloc_size
         for q in self.qll:
             self.time += 1
@@ -63,6 +66,7 @@ class QuickFit:
         return self.fit(to_remove, alloc_size)
 
     def best_fit(self, alloc_size):
+        self.time = 0
         min_size = self.size + 1
 
         for q in self.qll:
@@ -73,6 +77,7 @@ class QuickFit:
         return self.fit(min_size, alloc_size)
 
     def worst_fit(self, alloc_size):
+        self.time = 0
         max_size = alloc_size
 
         for q in self.qll:
@@ -83,6 +88,7 @@ class QuickFit:
         return self.fit(max_size, alloc_size)
 
     def free(self, add_begin, size):
+        self.time = 0
         add_end = add_begin + size
         viz_ant, viz_prox = None, None
         to_delete = [None] * 2

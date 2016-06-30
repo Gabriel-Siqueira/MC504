@@ -150,4 +150,11 @@ class BitMap:
             i += 1
 
     def segmentation(self):
-        return 0
+        spaces = 0
+        i = -1
+        while i < self.size:
+            i += 1
+            while i < self.size and self.bitMap[i] == 0:
+                spaces += 1
+                i += 1
+        return (self.size - sum(self.bitMap),spaces)
