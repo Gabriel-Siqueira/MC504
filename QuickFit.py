@@ -1,5 +1,5 @@
 """
-    Implements a Hash-Table in wich values are lists are blocks and keys are the sizes of the blocks. Each block is represented by a tuple of two values: (first position, last position + 1).
+    Implements a Hash-Table in wich values are lists of blocks and keys are the sizes of the blocks. Each block is represented by a tuple of two values: (first position, last position + 1).
 """
 
 
