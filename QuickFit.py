@@ -150,7 +150,7 @@ class QuickFit:
         for q in self.qll:
             # Counts an operation of access in the structure due to the iterator q
             self.time += 1
-            # If max_size is not the max_size ...
+            # If max_size is not the maximum size ...
             if q > max_size:
                 # ... updates the max_size
                 max_size = q
