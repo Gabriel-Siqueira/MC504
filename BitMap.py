@@ -69,8 +69,11 @@ class BitMap:
             return -1
 
     def next_fit(self, alloc_size):
+        # Starts to count the virtual time
         self.time = 0
+        # Save initial address
         add_begin = self.add
+        # Continue where stops last time
         add = self.add
         second = False
         
@@ -78,18 +81,26 @@ class BitMap:
         if alloc_size == 0:
             return self.add
 
+        # Just stops in the socond time the address is the initial address
         while not second or add != add_begin:
             
             second = True
     
+            # For each access in the memory that will be made in the comparison of the if right below
             self.time += 1
+            # If the first block is free
             if self.bitMap[add] == 0:
+                # Tries to find a set of alloc_size congruent free blocks
                 i = 0
+                # While only less then alloc_size valid free blocks are found
                 while i < alloc_size and add + i < self.size and self.bitMap[add + i] == 0:
+                    # Counts an access in the structure
                     self.time += 1
+                    # Increment the size already found
                     i += 1
-                
+                # If a set of alloc_size blocks is found
                 if i == alloc_size:
+                    # Allocate that block
                     i = 0
                     while i < alloc_size:
                         
@@ -99,14 +110,17 @@ class BitMap:
 
                     self.add = (add + alloc_size) % self.size
                     return add
-
+                # Else, jumps that set of blocks
                 else:
+                    # already pass through all the bits
                     if add < add_begin and add + i >= add_begin:
                         return -1
+                    # back to begin
                     elif(add + i >= self.size):
                         add = 0
                     else:
                         add = add + i
+            # Else tries the next block
             else:
                 add = (add + 1) % self.size
         return -1
