@@ -68,6 +68,11 @@ class BitMap:
         if add >= self.size:
             return -1
 
+    """
+        It tries to allocate in the first set of congruent free blocks
+        (after the last allocated block) that fits the requisition
+            alloc_size: Requested size to allocate
+    """
     def next_fit(self, alloc_size):
         # Starts to count the virtual time
         self.time = 0
@@ -240,11 +245,16 @@ class BitMap:
         Counts number of free blocks and the number of spaces, that are sets of congruent free blocks
     """
     def segmentation(self):
+
+        """ Calculate values to estimate segmentation. """
+        
         spaces = 0
         i = -1
+        # Calculate spaces by finding the continuous sequences of bits 0.  
         while i < self.size:
             i += 1
             while i < self.size and self.bitMap[i] == 0:
                 spaces += 1
                 i += 1
+        # Blocks are the size of the bit map minus the number of bits 1.  
         return (self.size - sum(self.bitMap),spaces)
